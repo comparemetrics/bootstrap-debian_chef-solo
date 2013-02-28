@@ -1,0 +1,21 @@
+{
+	"nodejs": {
+		"install_method"	: "source",
+		"version"			: "0.7.8",
+		"dir"				: "/usr/local",
+		"src_url"			: "http://nodejs.org/dist"
+	},
+	"nginx" : {
+		"user"  : "www-data",
+		"users" : [ { "username" : "<username>", "password" : "<thisisnotyetasecurepassword>" } ],
+		"allow_cluster_api" : true
+	},
+	"run_list": [
+				"recipe[apt]",
+				"recipe[build-essential]",
+				"recipe[nginx]",
+				"recipe[nodejs]",
+				"recipe[nodejs::install_from_source]",
+				"recipe[nodejs::npm]"
+			  ]
+}

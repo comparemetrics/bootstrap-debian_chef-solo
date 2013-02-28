@@ -1,0 +1,33 @@
+#!/bin/bash
+# This is the file to configure any other local configuration for the debian server along with downloading needed recipes.
+#
+
+GITSRV="github.com"
+
+echo -e "\nInstalling git deploy key..." \
+        "\n===============================================================================\n"
+mkdir /root/.ssh/ -p;
+curl -s http://user:pass@host/deployid.pub > /root/.ssh/id_rsa.pub;
+curl -s http://user:pass@host/deployid > /root/.ssh/id_rsa;
+ssh-keyscan -H $GITSRV >> ~/.ssh/known_hosts;
+chmod 600 /root/.ssh/id_rsa;
+chmod 644 /root/.ssh/known_hosts /root/.ssh/id_rsa.pub;
+
+echo -e "\nDownloading cookbooks..." \
+        "\n===============================================================================\n"
+git clone git@$GITSRV:cookbooks/apt.git /var/chef-solo/site-cookbooks/apt
+git clone git@$GITSRV:cookbooks/ohai.git /var/chef-solo/site-cookbooks/ohai
+git clone git@$GITSRV:cookbooks/build-essential.git /var/chef-solo/site-cookbooks/build-essential
+
+echo -e "\nInstalling Java..." \
+        "\n===============================================================================\n"
+echo "deb http://www.duinsoft.nl/pkg debs all" > /etc/apt/sources.list.d/duinsoft.list
+apt-key adv --keyserver keys.gnupg.net --recv-keys 5CB26B26
+apt-get update --yes --fix-missing -qq
+apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install update-sun-jre --yes --fix-missing --force-yes -qq
+
+echo -e "\nFix for nginx..." \
+        "\n===============================================================================\n"
+mkdir -p /var/www/nginx-default
+echo "nginx running" > /var/www/nginx-default/index.html
+chown -R www-data.www-data /var/www

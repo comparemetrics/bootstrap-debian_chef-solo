@@ -1,0 +1,26 @@
+How to use this package to bootstrap a debian server with chef-solo:
+
+cp deploydata.sh.example deploydata.sh
+
+nano deploydata.sh # add cookbooks and any additional steps you want executed.
+
+cp node.json.example node.json
+
+nano node.json # configure cookbooks
+
+bash ./deploy.sh $HOST $PORT $USER $KEY $NAME $FQDN
+
+Usage: deploy.sh [options]
+
+Bootstrap debian server with chef-solo
+
+        Options:
+        -s|--server     server ip or host to connect to
+        -p|--port       server ssh port to connect to
+        -u|--user       username used for ssh connection
+        -k|--key        ssh key used to connect to server
+        -n|--name       short name or nickname for server
+        -d|--domain     fully qualified domain name for hostname
+        -h|--help       show this output
+        -v|--version    show version information
+
