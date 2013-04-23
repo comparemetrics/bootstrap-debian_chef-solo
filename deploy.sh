@@ -121,7 +121,7 @@ fi
 scp $SSH_OPTIONS debian_bootstrap_chef-solo.sh deploydata.sh node.json solo.rb $HOST:/tmp
 
 ssh -t $SSH_OPTIONS $HOST "hostname $FQDN; echo hostname $FQDN>>/etc/rc.local;"
-ssh -t $SSH_OPTIONS $HOST "sed '/^127\.0\.0\.1/ s/$/ $FQDN $HOST/' /etc/hosts"
+ssh -t $SSH_OPTIONS $HOST "sed -i '/^127\.0\.0\.1/ s/$/ $FQDN $HOST/' /etc/hosts"
 
 time ssh -t $SSH_OPTIONS $HOST "bash /tmp/debian_bootstrap_chef-solo.sh"
 time ssh -t $SSH_OPTIONS $HOST "bash /tmp/deploydata.sh"
