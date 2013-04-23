@@ -107,12 +107,12 @@ if [ $? -ne 0 ]; then
 	exit 255;
 fi
 
-if [ deploydata.sh does not exist ]; then
+if [ -f node.json ]; then
 	echo "node.json missing, have you edited the example and renamed the file?"
 	exit 1;
 fi;
 
-if [ deploydata.sh does not exist ]; then
+if [ -f deploydata.sh ]; then
 	echo "deploydata.sh missing, have you edited the example and renamed file?"
 	exit 1;
 fi;
