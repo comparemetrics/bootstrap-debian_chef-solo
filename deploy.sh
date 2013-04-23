@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Debian Bootstrap for Chef Solo
 # Copyright (C) 2013  Benjamin H. Graham (bhgraham1@gmail.com)
@@ -9,13 +9,14 @@
 
 # Check for command line argument.
 
+# 0.4.1 - removing getopt for getopts as getopt is broken
 die () {
 	echo >&2 "$@"
 	exit 1
 }
 
 PROGNAME=${0##*/}
-PROGVERSION=0.3.0
+PROGVERSION=0.4.1
 
 usage() {
   cat << EO
@@ -28,87 +29,71 @@ Bootstrap debian server with chef-solo
 EO
   cat <<EO | column -s\& -t
 
-        -s|--server & server ip or host to connect to
-        -p|--port & server ssh port to connect to
-        -u|--user & username used for ssh connection
-        -k|--key & ssh key used to connect to server
-        -n|--name & short name or nickname for server
-        -d|--domain & fully qualified domain name for hostname
-        -h|--help & show this output
-        -v|--version & show version information
+        -s & server ip or host to connect to
+        -p & server ssh port to connect to
+        -u & username used for ssh connection
+        -k & ssh key used to connect to server
+        -n & short name or nickname for server
+        -d & fully qualified domain name for hostname
+        -h & show this output
+        -v & show version information
 EO
 }
 
-SHORTOPTS="hvtspuknd:"
-LONGOPTS="help,version,test,server,port,user,key,name,domain:"
-
-ARGS=$(getopt -s bash --options $SHORTOPTS  \
-  --longoptions $LONGOPTS --name $PROGNAME -- "$@" )
-
-eval set -- "$ARGS"
-
-while true; do
-   case $1 in
-      -h|--help)
-         usage
-         exit 0
-         ;;
-      -v|--version)
-         echo "$PROGVERSION"
-         exit 0
-         ;;
-      -s|--server)
-         shift
-		 HOST=$1;
-         echo $HOST
-         ;;
-      -p|--port)
-         shift
-		 PORT=$1;
-         echo "$PORT"
-         ;;
-      -u|--user)
-         shift
-		 USER=$1;
-         echo "$USER"
-         ;;
-      -k|--key)
-         shift
-		 KEY=$1;
-         echo "$KEY"
-         ;;
-      -n|--name)
-         shift
-		 NAME=$1;
-         echo "$NAME"
-         ;;
-      -d|--domain)
-         shift
-		 FQDN=$1;
-         echo "$FQDN"
-         ;;
-      --)
-         shift
-         break
-         ;;
-      *)
-         shift
-         break
-         ;;
-   esac
-   shift
+while getopts "v:h:s:p:u:k:n:d:" opt; do
+  case $opt in
+    h)
+		usage
+		exit 0
+		;;
+	v)
+		echo "$PROGVERSION"
+		exit 0
+		;;
+	s)
+		HOST=$OPTARG;
+#		echo "$HOST"
+		;;
+	p)
+		PORT=${OPTARG};
+#		echo "$PORT"
+		;;
+	u)
+		USER=${OPTARG};
+#		echo "$USER"
+		;;
+	k)
+		KEY=${OPTARG};
+#		echo "$KEY"
+		;;
+	n)
+		NAME=${OPTARG};
+#		echo "$NAME"
+		;;
+	d)
+		FQDN=${OPTARG};
+#		echo "$FQDN"
+		;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
 done
 
 [ "$#" -eq 12 ] || die "12 arguments required, $# provided";
 
-exit
 # Set the name of the server:
-HOST=$1;
-PORT=$2;
-USER=$3;
-KEY=$4;
-NAME=$5;
-FQDN=$6;
+#HOST=$1;
+#PORT=$2;
+#USER=$3;
+#KEY=$4;
+#NAME=$5;
+#FQDN=$6;
 
 SSH_OPTIONS="-o BatchMode=yes -o User=$USER -o IdentityFile=$KEY -o Port=$PORT -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null";
 
