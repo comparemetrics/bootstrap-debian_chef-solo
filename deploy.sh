@@ -107,15 +107,15 @@ if [ $? -ne 0 ]; then
 	exit 255;
 fi
 
-if [ -f node.json ]; then
-	echo "node.json missing, have you edited the example and renamed the file?"
-	exit 1;
-fi;
+#if [ -f node.json ]; then
+#	echo "node.json missing, have you edited the example and renamed the file?"
+#	exit 1;
+#fi;
 
-if [ -f deploydata.sh ]; then
-	echo "deploydata.sh missing, have you edited the example and renamed file?"
-	exit 1;
-fi;
+#if [ -f deploydata.sh ]; then
+#	echo "deploydata.sh missing, have you edited the example and renamed file?"
+#	exit 1;
+#fi;
 
 # Now, copy the files to the machine and execute the bootstrap script:
 scp $SSH_OPTIONS debian_bootstrap_chef-solo.sh deploydata.sh node.json solo.rb $HOST:/tmp
