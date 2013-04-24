@@ -95,7 +95,7 @@ done
 #NAME=$5;
 #FQDN=$6;
 
-SSH_OPTIONS="-o BatchMode=yes -o User=$USER -o IdentityFile=$KEY -o Port=$PORT -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null";
+SSH_OPTIONS="-o BatchMode=yes -o User=$USER -o IdentityFile=$KEY -o Port=$PORT -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=quiet";
 
 # Add to the known hosts
 ssh-keyscan -H ${HOST} >> ~/.ssh/known_hosts

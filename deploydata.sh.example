@@ -15,9 +15,9 @@ chmod 644 /root/.ssh/known_hosts /root/.ssh/id_rsa.pub;
 
 echo -e "\nDownloading cookbooks..." \
         "\n===============================================================================\n"
-git clone git@$GITSRV:cookbooks/apt.git /var/chef-solo/site-cookbooks/apt
-git clone git@$GITSRV:cookbooks/ohai.git /var/chef-solo/site-cookbooks/ohai
-git clone git@$GITSRV:cookbooks/build-essential.git /var/chef-solo/site-cookbooks/build-essential
+git clone --quiet git@$GITSRV:cookbooks/apt.git /var/chef-solo/site-cookbooks/apt
+git clone --quiet git@$GITSRV:cookbooks/ohai.git /var/chef-solo/site-cookbooks/ohai
+git clone --quiet git@$GITSRV:cookbooks/build-essential.git /var/chef-solo/site-cookbooks/build-essential
 
 echo -e "\nInstalling Java..." \
         "\n===============================================================================\n"
